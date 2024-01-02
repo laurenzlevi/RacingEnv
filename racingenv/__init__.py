@@ -7,12 +7,12 @@ resource_dir = os.path.dirname(os.path.realpath(__file__)) + '/'
 
 register(
      id="racingenv/Racing-v1",
-     entry_point="racingenv.env:racingenv",
+     entry_point="racingenv.env:RacingEnv",
 )
 
 register(
      id="racingenv/Racing-features-v1",
-     entry_point="racingenv.env:racingenv",
+     entry_point="racingenv.env:RacingEnv",
      kwargs={
           "obs_type": "features"
      }
@@ -20,7 +20,7 @@ register(
 
 register(
      id="racingenv/Racing-pixels-v1",
-     entry_point="racingenv.env:racingenv",
+     entry_point="racingenv.env:RacingEnv",
      kwargs={
           "obs_type": "pixels"
      }
