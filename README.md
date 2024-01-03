@@ -91,6 +91,8 @@ The environment supports 4 rendering modes
 ### Human
 
 Implements human rendering, additionally a resolution tuple (width, height) maybe be passed when creating the environment via `resolution=(width, height)`.\
+![human](https://github.com/laurenzlevi/RacingEnv/assets/72398071/a9d6e013-53e4-4315-bb76-3009827f909f)
+
 
 ### RGB_Array
 
@@ -99,8 +101,9 @@ Renders the same frame as in human mode, but the resolution is fixed to be 800 b
 ### Agent
 
 Renders the game in the same way the agent "sees" it.
+![agent](https://github.com/laurenzlevi/RacingEnv/assets/72398071/fcef8f33-55e2-4310-a304-456c7bf2c67a)
 
 ### Debug
 
-Renders the game in "human" mode with additional debug info.
-
+Human rendering with additional debug information.
+![debug](https://github.com/laurenzlevi/RacingEnv/assets/72398071/65a30f5f-ce82-49ae-aa67-f979c40be352)
