@@ -107,10 +107,12 @@ class RacingEnv(gym.Env):
                 0.0,  # y agent position
                 -1.0,  # x direction
                 -1.0,  # y direction
-                -300.0,  # x distance to the next checkpoints inner bound
-                -300.0,  # y distance to the next checkpoints inner bound
-                -300.0,  # x distance to the next checkpoints outer bound
-                -300.0,  # y distance to the next checkpoints outer bound
+                0.0,  # distance to the next checkpoints inner bound
+                -1.0,  # x direction to the next checkpoints inner bound
+                -1.0,  # y direction to the next checkpoints inner bound
+                0.0,  # distance to the next checkpoints outer bound
+                -1.0,  # x direction to the next checkpoints outer bound
+                -1.0,  # y direction to the next checkpoints outer bound
                 -1.0,  # forward velocity
                 -1.0,  # angular velocity
                 -1.0  # lateral velocity
@@ -129,10 +131,12 @@ class RacingEnv(gym.Env):
                 1.0,  # y agent position
                 1.0,  # x direction
                 1.0,  # y direction
-                300.0,  # x distance to the next checkpoints inner bound
-                300.0,  # y distance to the next checkpoints inner bound
-                300.0,  # x distance to the next checkpoints outer bound
-                300.0,  # y distance to the next checkpoints outer bound
+                1.0,  # distance to the next checkpoints inner bound
+                1.0,  # x direction to the next checkpoints inner bound
+                1.0,  # y direction to the next checkpoints inner bound
+                1.0,  # distance to the next checkpoints outer bound
+                1.0,  # x direction to the next checkpoints outer bound
+                1.0,  # y direction to the next checkpoints outer bound
                 1.0,  # forward velocity
                 1.0,  # angular velocity
                 1.0  # lateral velocity
@@ -205,10 +209,12 @@ class RacingEnv(gym.Env):
                 self.simulation.player.hitbox.center.y/self.upper_bound.y,
                 self.simulation.player.direction.x,
                 self.simulation.player.direction.y,
-                (self.simulation.track.checkpoints[self.simulation.cp_id].start.x - self.simulation.player.hitbox.center.x)/200.0,
-                (self.simulation.track.checkpoints[self.simulation.cp_id].start.y - self.simulation.player.hitbox.center.y)/200.0,
-                (self.simulation.track.checkpoints[self.simulation.cp_id].end.x - self.simulation.player.hitbox.center.x)/200.0,
-                (self.simulation.track.checkpoints[self.simulation.cp_id].end.y - self.simulation.player.hitbox.center.y)/200.0,
+                np.clip(self.simulation.player.hitbox.center.distance_to(self.simulation.track.checkpoints[self.simulation.cp_id].start)/MAX_RAY_LENGTH, 0.0, 1.0),
+                (self.simulation.track.checkpoints[self.simulation.cp_id].start - self.simulation.player.hitbox.center).normalize().x,
+                (self.simulation.track.checkpoints[self.simulation.cp_id].start - self.simulation.player.hitbox.center).normalize().y,
+                np.clip(self.simulation.player.hitbox.center.distance_to(self.simulation.track.checkpoints[self.simulation.cp_id].end) / MAX_RAY_LENGTH, 0.0, 1.0),
+                (self.simulation.track.checkpoints[self.simulation.cp_id].end - self.simulation.player.hitbox.center).normalize().x,
+                (self.simulation.track.checkpoints[self.simulation.cp_id].end - self.simulation.player.hitbox.center).normalize().y,
                 self.simulation.player.velocity/self.simulation.player.max_velocity,
                 self.simulation.player.angular_velocity/self.simulation.player.angular_velocity,
                 self.simulation.player.lateral_velocity/self.simulation.player.max_lateral_velocity

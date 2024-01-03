@@ -38,15 +38,17 @@ The environment can be customized using the following kwargs:
 
 ## Feature Space
 
-The environment defines the following features (Shape 35x1):
+The environment defines the following features (Shape 37x1):
 - Agent x-position `[0.0, 1.0]`
 - Agent y-position `[0.0, 1.0]`
 - Agent normalized x-direction `[-1.0, 1.0]`
 - Agent normalized y-direction `[-1.0, 1.0]`
-- x-distance to the inner bound of the next checkpoint (not correctly normalized yet)
-- y-distance to the inner bound of the next checkpoint (not correctly normalized yet)
-- x-distance to the outer bound of the next checkpoint (not correctly normalized yet)
-- y-distance to the outer bound of the next checkpoint (not correctly normalized yet)
+- Distance to the inner bound of the next checkpoint or MAX_RAY_LENGTH `[0.0, 1.0]`
+- Normalized x-direction to the inner bound of the next checkpoint `[-1.0, 1.0]`
+- Normalized y-direction to the inner bound of the next checkpoint `[-1.0, 1.0]`
+- Distance to the outer bound of the next checkpoint or MAX_RAY_LENGTH `[0.0, 1.0]`
+- Normalized x-direction to the outer bound of the next checkpoint `[-1.0, 1.0]`
+- Normalized y-direction to the outer bound of the next checkpoint `[-1.0, 1.0]`
 - Agent forward velocity `[-1.0, 1.0]`
 - Agent angular velocity `[-1.0, 1.0]`
 - Agent lateral velocity `[-1.0, 1.0]`
