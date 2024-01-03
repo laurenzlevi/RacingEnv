@@ -107,3 +107,7 @@ Renders the game in the same way the agent "sees" it.
 
 Human rendering with additional debug information.
 ![debug](https://github.com/laurenzlevi/RacingEnv/assets/72398071/65a30f5f-ce82-49ae-aa67-f979c40be352)
+
+## Credits
+
+The AE86 sprite has been created by [u/cropmania](https://www.reddit.com/user/cropmania/).
