@@ -155,7 +155,7 @@ class RacingEnv(gym.Env):
                 dtype=np.float_
             )
 
-            self.should_truncate = None
+            self.is_moving = False
 
     def reset(self, seed=None, options=None):
         self.simulation.reset()
@@ -163,8 +163,6 @@ class RacingEnv(gym.Env):
 
         for checkpoint in self.simulation.track.checkpoints:
             checkpoint.active = True
-
-        self.should_truncate = None
 
         return self._get_obs(), self._get_info()
 
@@ -174,16 +172,10 @@ class RacingEnv(gym.Env):
                                  self.simulation.player.position.y - self.renderer.camera.viewport.height / 2.0)
         self._update_reward()
 
-        if self.simulation.player.velocity != 0.0:
-            self.should_truncate = False
-        else:
-            self.should_truncate = True
-
         if self.render_mode == "human" or self.render_mode == "agent":
             self.render()
 
-        return self._get_obs(), self.reward, not self.simulation.player.alive,\
-            self.should_truncate if self.should_truncate is not None else False, self._get_info()
+        return self._get_obs(), self.reward, not self.simulation.player.alive, False, self._get_info()
 
     def _update_reward(self):
         self.reward = 0.0
@@ -194,6 +186,11 @@ class RacingEnv(gym.Env):
 
         if not self.simulation.player.alive:
             self.reward -= -1.0
+
+        if self.simulation.player.velocity == 0.0 and self.is_moving:
+            self.reward -= 1.0
+        else:
+            self.is_moving = True
 
     def _get_obs(self):
         if self.obs_type == "pixels":

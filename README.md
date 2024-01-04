@@ -112,4 +112,5 @@ Human rendering with additional debug information.
 
 ## Credits
 
-The AE86 sprite has been created by [u/cropmania](https://www.reddit.com/user/cropmania/).
+The AE86 sprite has been created by [u/cropmania](https://www.reddit.com/user/cropmania/).\
+This environment was created as part of the Fachprojekt [Applied Deep Reinforcement Learning](https://ai.cs.tu-dortmund.de/teaching/bsc-fachprojekte/applied-deep-reinforcement-learning/) at TU-Dortmund.
