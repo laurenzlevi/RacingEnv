@@ -189,7 +189,9 @@ class RacingEnv(gym.Env):
 
         if self.simulation.player.velocity == 0.0 and self.is_moving:
             self.reward -= 1.0
-        else:
+            self.is_moving = False
+
+        if self.simulation.player.velocity != 0.0:
             self.is_moving = True
 
     def _get_obs(self):
