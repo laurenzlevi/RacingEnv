@@ -34,7 +34,7 @@ class RacingEnv(gym.Env):
         "render_fps": 60.0
     }
 
-    def __init__(self, render_mode=None, obs_type=None, physics_settings=None, resolution=None):
+    def __init__(self, render_mode=None, obs_type=None, physics_settings=None, resolution=None, trunc_laps=2):
         if render_mode is not None and render_mode in self.metadata["render_modes"]:
             if render_mode == "debug":
                 self.render_mode = "human"
@@ -156,10 +156,12 @@ class RacingEnv(gym.Env):
             )
 
             self.is_moving = False
+            self.trunc_laps = trunc_laps
 
     def reset(self, seed=None, options=None):
         self.simulation.reset()
         self.cp_id = 0
+        self.is_moving = False
 
         for checkpoint in self.simulation.track.checkpoints:
             checkpoint.active = True
@@ -175,7 +177,7 @@ class RacingEnv(gym.Env):
         if self.render_mode == "human" or self.render_mode == "agent":
             self.render()
 
-        return self._get_obs(), self.reward, not self.simulation.player.alive, False, self._get_info()
+        return self._get_obs(), self.reward, not self.simulation.player.alive, self.simulation.laps == self.trunc_laps, self._get_info()
 
     def _update_reward(self):
         self.reward = 0.0

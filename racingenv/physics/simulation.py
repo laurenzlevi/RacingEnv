@@ -20,6 +20,7 @@ class Simulation:
         self.player = Car(resource_manager.load_sprite("Car.png", True), physics_settings)
         self.track = Track(resource_dir + 'Resources/Tracks/Hockenheim.xml', resource_manager)
         self.cp_id = 0
+        self.laps = 0
 
         self.num_rays = num_rays
         self.ray_hits = [
@@ -44,6 +45,7 @@ class Simulation:
         self.player.lateral_velocity = 0.0
         self.player.velocity = 0.0
         self.cp_id = 0
+        self.laps = 0
         self.player.__calculate_hitbox__()
 
         for checkpoint in self.track.checkpoints:
@@ -77,6 +79,7 @@ class Simulation:
 
             if self.cp_id == len(self.track.checkpoints):
                 self.cp_id = 0
+                self.laps += 1
 
                 for cp in self.track.checkpoints:
                     cp.active = True
