@@ -180,7 +180,7 @@ class RacingEnv(gym.Env):
         return self._get_obs(), self.reward, not self.simulation.player.alive, self.simulation.laps == self.trunc_laps, self._get_info()
 
     def _update_reward(self):
-        self.reward = 0.0
+        self.reward = -0.001
 
         if self.cp_id != self.simulation.cp_id:
             self.reward += 1.0
