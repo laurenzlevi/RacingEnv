@@ -47,12 +47,15 @@ class RacingEnv(gym.Env):
             self.render_mode = "human"
             self.render_debug = False
 
-        self.width = 800
-        self.height = 600
-
         if resolution is not None and self.render_mode == "human":
             self.width = resolution[0]
             self.height = resolution[1]
+        elif obs_type == "features":
+            self.width = 800
+            self.height = 600
+        elif obs_type == "pixels":
+            self.width = 420
+            self.height = 420
 
         self.reward = 0.0
         self.num_rays = 8
@@ -86,7 +89,7 @@ class RacingEnv(gym.Env):
             self.surface = pygame.Surface([self.width, self.height])
             self.resource_manager = ResourceManager(resource_dir + '/Resources/Textures/', False)
 
-        self.renderer = SimulationRenderer(self.render_mode)
+        self.renderer = SimulationRenderer(self.render_mode, self.width, self.height)
         self.simulation = Simulation(self.resource_manager, self.physics_settings, self.num_rays)
 
         self.lower_bound, self.upper_bound = Vec2(0.0, 0.0), Vec2(3360.0 + MAX_RAY_LENGTH, 1890.0 + MAX_RAY_LENGTH)
@@ -100,7 +103,7 @@ class RacingEnv(gym.Env):
 
         self.action_space = spaces.Discrete(6)
         if self.obs_type == "pixels":
-            self.observation_space = gym.spaces.Box(0, 255, shape=(64, 64, 3), dtype=np.uint8)
+            self.observation_space = gym.spaces.Box(0, 255, shape=(84, 84, 3), dtype=np.uint8)
         elif self.obs_type == "features":
             low = [
                 0.0,  # x agent position
@@ -155,8 +158,8 @@ class RacingEnv(gym.Env):
                 dtype=np.float_
             )
 
-            self.is_moving = False
-            self.trunc_laps = trunc_laps
+        self.is_moving = False
+        self.trunc_laps = trunc_laps
 
     def reset(self, seed=None, options=None):
         self.simulation.reset()
@@ -198,7 +201,7 @@ class RacingEnv(gym.Env):
 
     def _get_obs(self):
         if self.obs_type == "pixels":
-            transformed = pygame.transform.smoothscale(self.surface, [64, 64])
+            transformed = pygame.transform.smoothscale(self.surface, [84, 84])
 
             return np.transpose(
                 np.array(pygame.surfarray.pixels3d(transformed)), axes=(1, 0, 2)
