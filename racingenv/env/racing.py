@@ -83,10 +83,10 @@ class RacingEnv(gym.Env):
 
         pygame.display.init()
         if self.render_mode == "human" or self.render_mode == "agent":
-            self.surface = pygame.display.set_mode([self.width, self.height])
+            self.surface = pygame.display.set_mode(size=[self.width, self.height])
             self.resource_manager = ResourceManager(resource_dir + '/Resources/Textures/', True)
         else:
-            self.surface = pygame.Surface([self.width, self.height])
+            self.surface = pygame.Surface(size=[self.width, self.height])
             self.resource_manager = ResourceManager(resource_dir + '/Resources/Textures/', False)
 
         self.renderer = SimulationRenderer(self.render_mode, self.width, self.height)
@@ -103,7 +103,7 @@ class RacingEnv(gym.Env):
 
         self.action_space = spaces.Discrete(6)
         if self.obs_type == "pixels":
-            self.observation_space = gym.spaces.Box(0, 255, shape=(84, 84, 3), dtype=np.uint8)
+            self.observation_space = gym.spaces.Box(0, 1, shape=(84, 84, 3), dtype=np.float32)
         elif self.obs_type == "features":
             low = [
                 0.0,  # x agent position
@@ -177,7 +177,7 @@ class RacingEnv(gym.Env):
                                  self.simulation.player.position.y - self.renderer.camera.viewport.height / 2.0)
         self._update_reward()
 
-        if self.render_mode == "human" or self.render_mode == "agent":
+        if self.render_mode == "human" or self.render_mode == "agent" or self.obs_type == "pixels":
             self.render()
 
         return self._get_obs(), self.reward, not self.simulation.player.alive, self.simulation.laps == self.trunc_laps, self._get_info()
@@ -203,10 +203,7 @@ class RacingEnv(gym.Env):
         if self.obs_type == "pixels":
             transformed = pygame.transform.smoothscale(self.surface, [84, 84])
 
-            return np.transpose(
-                np.array(pygame.surfarray.pixels3d(transformed)), axes=(1, 0, 2)
-            )
-
+            return (pygame.surfarray.pixels3d(transformed)/255.0).astype(dtype=np.float32)
         elif self.obs_type == "features":
             features = [
                 self.simulation.player.hitbox.center.x/self.upper_bound.x,
@@ -249,9 +246,7 @@ class RacingEnv(gym.Env):
             self.clock.tick(self.metadata["render_fps"])
             pygame.display.flip()
         elif self.render_mode == "rgb_array":
-            return np.transpose(
-                np.array(pygame.surfarray.pixels3d(self.surface)), axes=(1, 0, 2)
-            )
+            return pygame.surfarray.pixels3d(self.surface)
 
     def close(self):
         pygame.display.quit()
