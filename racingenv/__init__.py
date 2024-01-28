@@ -22,6 +22,16 @@ register(
      id="racingenv/Racing-pixels-v1",
      entry_point="racingenv.env:RacingEnv",
      kwargs={
-          "obs_type": "pixels"
+          "obs_type": "pixels",
+          "normalize_images": False
+     }
+)
+
+register(
+     id="racingenv/Racing-normalized-v1",
+     entry_point="racingenv.env:RacingEnv",
+     kwargs={
+          "obs_type": "pixels",
+          "normalize_images": True
      }
 )
