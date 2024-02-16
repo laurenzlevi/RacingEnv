@@ -210,9 +210,13 @@ class RacingEnv(gym.Env):
             transformed = pygame.transform.scale(self.surface, [84, 84])
 
             if self.normalize_images:
-                return (pygame.surfarray.pixels3d(transformed)/255.0).astype(dtype=np.float32)
+                return np.transpose(
+                    (pygame.surfarray.array3d(transformed)/255.0).astype(dtype=np.float32), axes=(1, 0, 2)
+                )
             else:
-                return pygame.surfarray.pixels3d(transformed).astype(dtype=np.uint8)
+                return np.transpose(
+                    pygame.surfarray.array3d(transformed), axes=(1, 0, 2)
+                ).astype(np.uint8)
         elif self.obs_type == "features":
             features = [
                 self.simulation.player.hitbox.center.x/self.upper_bound.x,
@@ -255,7 +259,9 @@ class RacingEnv(gym.Env):
             self.clock.tick(self.metadata["render_fps"])
             pygame.display.flip()
         elif self.render_mode == "rgb_array":
-            return pygame.surfarray.pixels3d(self.surface)
+            return np.transpose(
+                pygame.surfarray.array3d(self.surface), axes=(1, 0, 2)
+            )
 
     def close(self):
         pygame.display.quit()
