@@ -32,7 +32,8 @@ class RacingEnv(gym.Env):
             "pixels",
             "features"
         ],
-        "render_fps": 60.0
+        "render_fps": 60.0,
+        "action_names": ['Forward', 'Backward', 'Left', 'Right', 'Forward-right', 'Forward-left', 'noop']
     }
 
     def __init__(self, render_mode=None, obs_type=None, physics_settings=None, resolution=None, trunc_laps=2, normalize_images=False):
