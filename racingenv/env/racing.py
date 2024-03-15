@@ -31,10 +31,32 @@ class RacingEnv(gym.Env):
             "pixels",
             "features"
         ],
-        "render_fps": 60.0
+        "render_fps": 60.0,
+        "action_names": [
+            'Forward',
+            'Backward',
+            'Left',
+            'Right',
+            'Forward-right',
+            'Forward-left',
+            'noop'
+        ],
+        "action_space": [
+            'discrete',
+            'continuous'
+        ]
     }
 
-    def __init__(self, render_mode=None, obs_type=None, physics_settings=None, resolution=None, trunc_laps=2):
+    def __init__(
+            self,
+            render_mode=None,
+            obs_type=None,
+            physics_settings=None,
+            resolution=None,
+            trunc_laps=2,
+            normalize_images=False,
+            action_space=None
+    ):
         if render_mode is not None and render_mode in self.metadata["render_modes"]:
             if render_mode == "debug":
                 self.render_mode = "human"
@@ -97,6 +119,8 @@ class RacingEnv(gym.Env):
             self.obs_type = "features"
         else:
             self.obs_type = obs_type
+
+        if action_space
 
         self.action_space = spaces.Discrete(6)
         if self.obs_type == "pixels":
