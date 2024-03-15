@@ -7,9 +7,9 @@ from racingenv.renderer.trackrenderer import TrackRenderer
 
 
 class SimulationRenderer:
-    def __init__(self, render_mode):
+    def __init__(self, render_mode, width, height):
         self.font = pygame.font.SysFont('arial', 24)
-        self.camera = Camera(800, 600)
+        self.camera = Camera(width, height)
         self.render_mode = render_mode
         self.car_renderer = CarRenderer()
         self.track_renderer = TrackRenderer()

@@ -17,7 +17,7 @@ RayHit = namedtuple("RayHit", ["point", "distance", "wall"])
 
 class Simulation:
     def __init__(self, resource_manager, physics_settings, num_rays):
-        self.player = Car(resource_manager.load_sprite("Car.png", True), physics_settings)
+        self.player = Car(resource_manager.load_sprite("Car.png", False), physics_settings)
         self.track = Track(resource_dir + 'Resources/Tracks/Hockenheim.xml', resource_manager)
         self.cp_id = 0
         self.laps = 0
