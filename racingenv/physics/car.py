@@ -10,21 +10,13 @@ Hitbox = namedtuple('Hitbox', ['tl', 'tr', 'br', 'bl', 'center'])
 
 
 def map_action(index):
-    if index == 0: return Action.FORWARD
-    if index == 1: return Action.BACKWARD
-    if index == 2: return Action.LEFT
-    if index == 3: return Action.RIGHT
-    if index == 4: return Action.FORWARD | Action.RIGHT
-    if index == 5: return Action.FORWARD | Action.LEFT
-    if index == 6: return Action.NONE
-
-
-class Action(IntFlag):
-    FORWARD = 0x01
-    BACKWARD = 0x02,
-    LEFT = 0x04,
-    RIGHT = 0x08,
-    NONE = 0x00
+    if index == 0: return [1.0, 0.0]   # Action.FORWARD
+    if index == 1: return [-1.0, 0.0]  # Action.BACKWARD
+    if index == 2: return [0.0, -1.0]  # Action.LEFT
+    if index == 3: return [0.0, 1.0]   # Action.RIGHT
+    if index == 4: return [1.0, 1.0]   # Action.FORWARD | Action.RIGHT
+    if index == 5: return [1.0, -1.0]  # Action.FORWARD | Action.LEFT
+    if index == 6: return [0.0, 0.0]   # Action.NONE
 
 
 MAX_RAY_LENGTH = 500.0
@@ -63,11 +55,11 @@ class Car:
         self.__calculate_hitbox__()
 
     def update(self, action):
-        transformed_action = map_action(action)
-        if transformed_action & Action.FORWARD != 0:
-            self.velocity += self.acceleration
-        elif transformed_action & Action.BACKWARD != 0:
-            self.velocity -= self.acceleration
+        if isinstance(action, int):
+            action = map_action(action)
+
+        if action[0] != 0.0:
+            self.velocity += self.acceleration * action[0]
         else:
             drag = self.drag * -sign(self.velocity)
 
@@ -81,14 +73,9 @@ class Car:
         elif self.velocity < -self.max_velocity:
             self.velocity = -self.max_velocity
 
-        if transformed_action & Action.LEFT != 0 and self.velocity != 0:
-            self.direction = self.direction.rotate(-self.angular_velocity * sign(self.velocity))
-            self.lateral_direction = self.direction.rotate(90.0)
-            self.lateral_velocity += self.lateral_acceleration
-            self.update_image = True
-        elif transformed_action & Action.RIGHT != 0 and self.velocity != 0:
-            self.direction = self.direction.rotate(self.angular_velocity * sign(self.velocity))
-            self.lateral_direction = self.direction.rotate(-90.0)
+        if action[1] != 0 and self.velocity != 0:
+            self.direction = self.direction.rotate(self.angular_velocity * sign(self.velocity) * sign(action[1]))
+            self.lateral_direction = self.direction.rotate(90.0 * sign(action[1]))
             self.lateral_velocity += self.lateral_acceleration
             self.update_image = True
         else:

@@ -33,10 +33,31 @@ class RacingEnv(gym.Env):
             "features"
         ],
         "render_fps": 60.0,
-        "action_names": ['Forward', 'Backward', 'Left', 'Right', 'Forward-right', 'Forward-left', 'noop']
+        "action_names": [
+            'Forward',
+            'Backward',
+            'Left',
+            'Right',
+            'Forward-right',
+            'Forward-left',
+            'noop'
+        ],
+        "action_spaces": [
+            'discrete',
+            'continuous'
+        ]
     }
 
-    def __init__(self, render_mode=None, obs_type=None, physics_settings=None, resolution=None, trunc_laps=2, normalize_images=False):
+    def __init__(
+            self,
+            render_mode=None,
+            obs_type=None,
+            physics_settings=None,
+            resolution=None,
+            trunc_laps=2,
+            normalize_images=False,
+            action_space=None
+    ):
         if render_mode is not None and render_mode in self.metadata["render_modes"]:
             if render_mode == "debug":
                 self.render_mode = "human"
@@ -105,7 +126,15 @@ class RacingEnv(gym.Env):
         else:
             self.obs_type = obs_type
 
-        self.action_space = spaces.Discrete(6)
+        if action_space is None or action_space not in self.metadata["action_spaces"]:
+            logging.warning("No action space or illegal action space specified, defaulting to discrete")
+
+            self.action_space = spaces.Discrete(6)
+        elif action_space == "discrete":
+            self.action_space = spaces.Discrete(6)
+        elif action_space == "continuous":
+            self.action_space = spaces.Box(low=-1.0, high=1.0, shape=(2,))
+
         if self.obs_type == "pixels":
             if self.normalize_images:
                 self.observation_space = gym.spaces.Box(0, 1, shape=(84, 84, 3), dtype=np.float32)
