@@ -6,13 +6,13 @@ import os
 resource_dir = os.path.dirname(os.path.realpath(__file__)) + '/'
 
 register(
-     id="Racing-v1",
+     id="Racing-v2",
      entry_point="racingenv.env:RacingEnv",
      max_episode_steps=7200
 )
 
 register(
-     id="Racing-features-v1",
+     id="Racing-features-v2",
      entry_point="racingenv.env:RacingEnv",
      max_episode_steps=7200,
      kwargs={
@@ -22,7 +22,7 @@ register(
 )
 
 register(
-     id="Racing-pixels-v1",
+     id="Racing-pixels-v2",
      entry_point="racingenv.env:RacingEnv",
      max_episode_steps=7200,
      kwargs={
@@ -33,7 +33,7 @@ register(
 )
 
 register(
-     id="Racing-normalized-v1",
+     id="Racing-normalized-v2",
      entry_point="racingenv.env:RacingEnv",
      max_episode_steps=7200,
      kwargs={
@@ -44,7 +44,7 @@ register(
 )
 
 register(
-     id="Racing-features-discrete-v1",
+     id="Racing-features-discrete-v2",
      entry_point="racingenv.env:RacingEnv",
      max_episode_steps=7200,
      kwargs={
@@ -54,7 +54,7 @@ register(
 )
 
 register(
-     id="Racing-pixels-discrete-v1",
+     id="Racing-pixels-discrete-v2",
      entry_point="racingenv.env:RacingEnv",
      max_episode_steps=7200,
      kwargs={
@@ -65,7 +65,7 @@ register(
 )
 
 register(
-     id="Racing-normalized-discrete-v1",
+     id="Racing-normalized-discrete-v2",
      entry_point="racingenv.env:RacingEnv",
      max_episode_steps=7200,
      kwargs={

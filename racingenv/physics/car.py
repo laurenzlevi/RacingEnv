@@ -1,4 +1,5 @@
 import math
+import numbers
 
 from pygame.math import Vector2 as Vec2
 from enum import IntFlag
@@ -55,7 +56,7 @@ class Car:
         self.__calculate_hitbox__()
 
     def update(self, action):
-        if isinstance(action, int):
+        if isinstance(action, numbers.Integral):
             action = map_action(action)
 
         if action[0] != 0.0:
