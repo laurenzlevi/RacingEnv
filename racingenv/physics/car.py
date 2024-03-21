@@ -52,6 +52,7 @@ class Car:
         self.rotated_image = self.image
         self.rect = self.image.get_rect()
         self.hitbox = Hitbox(Vec2(0, 0), Vec2(0, 0), Vec2(0, 0), Vec2(0, 0), Vec2(0, 0))
+        self.steer = 0.0
         self.__calculate_ray_points__()
         self.__calculate_hitbox__()
 
@@ -75,7 +76,8 @@ class Car:
             self.velocity = -self.max_velocity
 
         if action[1] != 0 and self.velocity != 0:
-            self.direction = self.direction.rotate(self.angular_velocity * sign(self.velocity) * sign(action[1]))
+            self.steer = self.angular_velocity * sign(self.velocity) * sign(action[1])
+            self.direction = self.direction.rotate(self.steer)
             self.lateral_direction = self.direction.rotate(90.0 * sign(action[1]))
             self.lateral_velocity += self.lateral_acceleration
             self.update_image = True

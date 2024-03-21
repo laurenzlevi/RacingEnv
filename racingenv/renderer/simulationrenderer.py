@@ -14,6 +14,8 @@ class SimulationRenderer:
         self.car_renderer = CarRenderer()
         self.track_renderer = TrackRenderer()
 
+        self.width, self.height = width, height
+
     def render(self, simulation, render_debug, surface):
         surface.fill(pygame.color.Color(0, 0, 0, 255))
 
@@ -28,6 +30,7 @@ class SimulationRenderer:
     def _render_human(self, simulation, surface):
         self.track_renderer.render(surface, self.camera, simulation.track)
         self.car_renderer.render(surface, self.camera, simulation.player)
+        self._render_input(surface, simulation.player)
 
     def _render_agent(self, simulation, surface):
         for hit in simulation.ray_hits:
@@ -64,6 +67,8 @@ class SimulationRenderer:
                          self.camera.translate_point(simulation.track.checkpoints[simulation.cp_id].end),
                          width=2)
 
+        self._render_input(surface, simulation.player)
+
     def _render_debug(self, simulation, surface):
         for hit in simulation.ray_hits:
             pygame.draw.circle(surface, [0, 0, 255], self.camera.translate_point(hit.point), radius=6.0)
@@ -71,6 +76,7 @@ class SimulationRenderer:
         self.track_renderer.render_debug((255, 0, 0), surface, simulation.track, self.camera, True)
         self.car_renderer.render_debug(surface, self.camera, simulation.player)
 
+        # draws the map partition for collision detection
         pygame.draw.line(surface, [255, 128, 0],
                          self.camera.translate_point(Vec2(0.0, 0.0)), self.camera.translate_point(Vec2(3500.0, 0.0)),
                          width=2)
@@ -98,3 +104,13 @@ class SimulationRenderer:
         pygame.draw.line(surface, [255, 128, 0],
                          self.camera.translate_point(Vec2(2000.0, 0.0)),
                          self.camera.translate_point(Vec2(2000.0, 2000.0)), width=2)
+
+    def _render_input(self, surface, player):
+        rect = pygame.Rect(self.width - 300, self.height - 300, 200, 200)
+        vel, steer = player.velocity/player.max_velocity, player.steer/player.angular_velocity
+
+        pygame.draw.rect(surface, [255, 255, 255], rect)
+        pygame.draw.line(surface, [255, 255, 255], (rect.x + rect.w/2.0, rect.y), (rect.x + rect.w/2.0, rect.y + rect.h))
+        pygame.draw.line(surface, [255, 255, 255], (rect.x, rect.y + rect.h/2.0), (rect.x + rect.w, rect.y + rect.h/2.0))
+
+        pygame.draw.circle(surface, [255, 0, 0], (rect.x + rect.w * vel, rect.y + rect.h * steer), radius=4)
