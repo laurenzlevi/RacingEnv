@@ -106,11 +106,11 @@ class SimulationRenderer:
                          self.camera.translate_point(Vec2(2000.0, 2000.0)), width=2)
 
     def _render_input(self, surface, player):
-        rect = pygame.Rect(self.width - 300, self.height - 300, 200, 200)
+        rect = pygame.Rect(self.width - 260, self.height - 260, 200, 200)
         vel, steer = player.velocity/player.max_velocity, player.steer/player.angular_velocity
 
-        pygame.draw.rect(surface, [255, 255, 255], rect)
-        pygame.draw.line(surface, [255, 255, 255], (rect.x + rect.w/2.0, rect.y), (rect.x + rect.w/2.0, rect.y + rect.h))
-        pygame.draw.line(surface, [255, 255, 255], (rect.x, rect.y + rect.h/2.0), (rect.x + rect.w, rect.y + rect.h/2.0))
+        pygame.draw.rect(surface, [255, 255, 255], rect, width=2)
+        pygame.draw.line(surface, [255, 255, 255], (rect.x + rect.w/2.0, rect.y), (rect.x + rect.w/2.0, rect.y + rect.h), width=2)
+        pygame.draw.line(surface, [255, 255, 255], (rect.x, rect.y + rect.h/2.0), (rect.x + rect.w, rect.y + rect.h/2.0), width=2)
 
-        pygame.draw.circle(surface, [255, 0, 0], (rect.x + rect.w * vel, rect.y + rect.h * steer), radius=4)
+        pygame.draw.circle(surface, [255, 0, 0], (rect.x + rect.w/2.0 * vel, rect.y + rect.h/2.0 * steer), radius=4)
